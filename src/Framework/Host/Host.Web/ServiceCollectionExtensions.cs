@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NetModular.Lib.Auth.Jwt;
 using NetModular.Lib.Cache.Integration;
 using NetModular.Lib.Data.Integration;
@@ -26,7 +25,7 @@ namespace NetModular.Lib.Host.Web
         /// <param name="hostOptions"></param>
         /// <param name="env">环境</param>
         /// <returns></returns>
-        public static IServiceCollection AddWebHost(this IServiceCollection services, HostOptions hostOptions, IHostEnvironment env)
+        public static IServiceCollection AddWebHost(this IServiceCollection services, HostOptions hostOptions, IHostingEnvironment env)
         {
             services.AddSingleton(hostOptions);
 
@@ -68,13 +67,13 @@ namespace NetModular.Lib.Host.Web
                 }
 
             })
-            .AddNewtonsoftJson(options =>
+            .AddJsonOptions(options =>
             {
                 //设置日期格式化格式
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             })
             .AddValidators(services)//添加验证器
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //CORS
             services.AddCors(options =>
@@ -95,9 +94,6 @@ namespace NetModular.Lib.Host.Web
                 x.ValueLengthLimit = int.MaxValue;
                 x.MultipartBodyLengthLimit = int.MaxValue;
             });
-
-            //添加HttpClient相关
-            services.AddHttpClient();
 
             //添加模块的自定义服务
             services.AddModuleServices(modules);

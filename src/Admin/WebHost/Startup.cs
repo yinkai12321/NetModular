@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using NetModular.Lib.Host.Web;
 
 namespace NetModular.Module.Admin.WebHost
 {
     public class Startup : StartupAbstract
     {
-        public Startup(IHostEnvironment env) : base(env)
+        public Startup(IHostingEnvironment env) : base(env)
         {
         }
     }

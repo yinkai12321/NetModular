@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using NetModular.Lib.Host.Web.Middleware;
 using NetModular.Lib.Module.AspNetCore;
 using NetModular.Lib.Swagger.Core;
@@ -24,7 +24,7 @@ namespace NetModular.Lib.Host.Web
         /// <param name="hostOptions"></param>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseWebHost(this IApplicationBuilder app, HostOptions hostOptions, IHostEnvironment env)
+        public static IApplicationBuilder UseWebHost(this IApplicationBuilder app, HostOptions hostOptions, IHostingEnvironment env)
         {
             //异常处理
             app.UseExceptionHandle();
@@ -51,28 +51,19 @@ namespace NetModular.Lib.Host.Web
                 });
             }
 
-            //路由
-            app.UseRouting();
-
             //CORS
             app.UseCors("Default");
 
             //认证
             app.UseAuthentication();
 
-            //授权
-            app.UseAuthorization();
-
-            //配置端点
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();
-            });
-
             //开启Swagger
             if (hostOptions.Swagger || env.IsDevelopment())
             {
                 app.UseCustomSwagger();
             }
+
+            app.UseMvc();
 
             return app;
         }
@@ -131,7 +122,7 @@ namespace NetModular.Lib.Host.Web
         /// <returns></returns>
         public static IApplicationBuilder UseShutdownHandler(this IApplicationBuilder app)
         {
-            var applicationLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+            var applicationLifetime = app.ApplicationServices.GetRequiredService<IApplicationLifetime>();
 
             applicationLifetime.ApplicationStopping.Register(() =>
             {

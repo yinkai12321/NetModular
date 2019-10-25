@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using NetModular.Lib.Logging.Serilog;
 using NetModular.Lib.Utils.Core.Extensions;
 using NetModular.Lib.Utils.Core.Helpers;
@@ -28,7 +27,7 @@ namespace NetModular.Lib.Host.Web
         /// <typeparam name="TStartup"></typeparam>
         /// <param name="args"></param>
         /// <returns></returns>
-        public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : StartupAbstract
+        public IWebHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : StartupAbstract
         {
             var cfgHelper = new ConfigurationHelper();
 
@@ -38,14 +37,10 @@ namespace NetModular.Lib.Host.Web
             if (hostOptions.Urls.IsNull())
                 hostOptions.Urls = "http://*:5000";
 
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                    .UseDefaultServiceProvider(options => { options.ValidateOnBuild = false; })
-                    .ConfigureWebHostDefaults(webBuilder =>
-                    {
-                        webBuilder.UseStartup<TStartup>()
-                            .UseLogging()
-                            .UseUrls(hostOptions.Urls);
-                    });
+            return Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
+                .UseStartup<TStartup>()
+                .UseLogging()
+                .UseUrls(hostOptions.Urls);
         }
     }
 }

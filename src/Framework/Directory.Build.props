@@ -3,7 +3,7 @@
     <Authors>Oldli</Authors>
     <Version>1.4.1</Version>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <RootNamespacePrefix>NetModular.Lib</RootNamespacePrefix>
     <AssemblyName>$(RootNamespacePrefix).$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

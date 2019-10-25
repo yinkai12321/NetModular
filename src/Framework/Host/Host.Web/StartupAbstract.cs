@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NetModular.Lib.Utils.Core.Helpers;
 using HostOptions = NetModular.Lib.Host.Web.Options.HostOptions;
 
@@ -9,9 +9,9 @@ namespace NetModular.Lib.Host.Web
     public abstract class StartupAbstract
     {
         protected readonly HostOptions HostOptions;
-        protected readonly IHostEnvironment Env;
+        protected readonly IHostingEnvironment Env;
 
-        protected StartupAbstract(IHostEnvironment env)
+        protected StartupAbstract(IHostingEnvironment env)
         {
             Env = env;
             var cfgHelper = new ConfigurationHelper();

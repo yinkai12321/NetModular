@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using NetModular.Lib.Auth.Web;
+using NetModular.Lib.Module.AspNetCore;
 using NetModular.Lib.Utils.Core.Options;
 using NetModular.Module.Admin.Web.Core;
 using NetModular.Module.Admin.Web.Filters;
-using System.IO;
-using Microsoft.Extensions.Hosting;
-using NetModular.Lib.Auth.Web;
-using NetModular.Lib.Module.AspNetCore;
 
 namespace NetModular.Module.Admin.Web
 {
@@ -21,7 +21,7 @@ namespace NetModular.Module.Admin.Web
             services.AddScoped<IPermissionValidateHandler, PermissionValidateHandler>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var options = app.ApplicationServices.GetService<IOptionsMonitor<ModuleCommonOptions>>().CurrentValue;
 

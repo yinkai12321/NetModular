@@ -2,7 +2,6 @@
 using System.Linq;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using NetModular.Lib.Host.Web;
 using NetModular.Lib.Logging.Serilog;
 using NetModular.Lib.Utils.Core.Extensions;
@@ -34,7 +33,7 @@ namespace NetModular.Lib.Host.Electron
         /// <typeparam name="TStartup"></typeparam>
         /// <param name="args"></param>
         /// <returns></returns>
-        public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : StartupAbstract
+        public IWebHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : StartupAbstract
         {
             var cfgHelper = new ConfigurationHelper();
 
@@ -44,15 +43,11 @@ namespace NetModular.Lib.Host.Electron
             if (hostOptions.Urls.IsNull())
                 hostOptions.Urls = "http://*:5000";
 
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseElectron(args)
-                        .UseStartup<TStartup>()
-                        .UseLogging()
-                        .UseUrls(hostOptions.Urls);
-                });
+            return Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
+                .UseElectron(args)
+                .UseStartup<TStartup>()
+                .UseLogging()
+                .UseUrls(hostOptions.Urls);
         }
     }
 }
